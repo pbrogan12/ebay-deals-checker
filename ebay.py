@@ -1,6 +1,7 @@
 import urllib, json
 
 def dealsChecker(searchTerm, emailAddress):
+    textfile = open('itemid.txt', 'a + r')
     itemData = urllib.urlopen('http://deals.ebay.com/feeds/json').read()
     itemData = itemData.replace('ebaydailydeals', '"ebaydailydeals"')
     itemData = itemData.replace('(', '')
@@ -9,5 +10,11 @@ def dealsChecker(searchTerm, emailAddress):
     itemData = json.loads(itemData)
     for i in itemData['ebaydailydeals']['items']:
         if searchTerm.lower() in i['title'].lower():
-            print i['title'], i['convertedcurrentprice']
-
+            if str(i['itemid']) in textfile.read():
+                    print "BOOYAH"
+                    break
+            else:
+                textfile.write(i['itemid'] + "\n")
+                print i['itemid']
+                print i['title'], i['convertedcurrentprice'], i['itemid']
+    textfile.close()
