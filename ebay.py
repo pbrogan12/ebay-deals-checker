@@ -1,7 +1,11 @@
 import urllib, json
+import cPickle as pickle
 
 def dealsChecker(searchTerm, emailAddress):
-    textfile = open('itemid.txt', 'a + r')
+    try:
+        itemIds = pickle.load(open('itemIds.pkl','rb'))
+    except:
+        itemIds = []
     itemData = urllib.urlopen('http://deals.ebay.com/feeds/json').read()
     itemData = itemData.replace('ebaydailydeals', '"ebaydailydeals"')
     itemData = itemData.replace('(', '')
@@ -10,11 +14,9 @@ def dealsChecker(searchTerm, emailAddress):
     itemData = json.loads(itemData)
     for i in itemData['ebaydailydeals']['items']:
         if searchTerm.lower() in i['title'].lower():
-            if str(i['itemid']) in textfile.read():
-                    print "BOOYAH"
-                    break
+            if str(i['itemid']) in itemIds:
+                pass
             else:
-                textfile.write(i['itemid'] + "\n")
-                print i['itemid']
+                itemIds.append(str(i['itemid']))
                 print i['title'], i['convertedcurrentprice'], i['itemid']
-    textfile.close()
+    pickle.dump(itemIds, open('itemIds.pkl', 'wb'))
