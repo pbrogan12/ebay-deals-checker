@@ -22,16 +22,16 @@ def dealsChecker(searchTerm, emailAddress):
                 pass
             else:
                 itemIds.append(str(i['itemid']))
-                itemInfo = i['title'], i['convertedcurrentprice'], i['itemid'], i['dealurl']
-                msg = msg + str(itemInfo)
+                itemInfo = i['title'], i['convertedcurrentprice'], i['dealurl']
+                msg =  msg + i['title'] + i['convertedcurrentprice'] + i['dealurl']
     pickle.dump(itemIds, open('itemIds.pkl', 'wb'))
 
     if msg:
         msg = MIMEText(msg)
         msg['Subject'] = 'Ebay daily deals for %s' % searchTerm
-        msg['From'] = 'ebayDealsChecker@localhost'
+        msg['From'] = 'ebayDealsChecker@localhost.com'
         msg['To'] = emailAddress
         s = smtplib.SMTP('localhost')
-        s.sendmail('ebayDealsCHecker@localhost',emailAddress, msg.as_string())
+        s.sendmail('ebayDealsCHecker@localhost.com',[emailAddress], msg.as_string())
         s.quit
 
