@@ -23,7 +23,7 @@ def dealsChecker(searchTerm, emailAddress):
             else:
                 itemIds.append(str(i['itemid']))
                 itemInfo = i['title'], i['convertedcurrentprice'], i['dealurl']
-                msg =  msg + i['title'] + i['convertedcurrentprice'] + i['dealurl']
+                msg =  msg + i['title'] + ' ' + i['convertedcurrentprice'] + ' ' + i['dealurl'] + "\n"
     pickle.dump(itemIds, open('itemIds.pkl', 'wb'))
 
     if msg:
