@@ -1,7 +1,7 @@
 import urllib, json, smtplib
 import cPickle as pickle
 from email.mime.text import MIMEText
-def dealsChecker(searchTerm, emailAddress):
+def dealsChecker(searchTerm, emailAddress, emailPass):
 
     try:
         itemIds = pickle.load(open('itemIds.pkl','rb'))
@@ -29,9 +29,9 @@ def dealsChecker(searchTerm, emailAddress):
     if msg:
         msg = MIMEText(msg)
         msg['Subject'] = 'Ebay daily deals for %s' % searchTerm
-        msg['From'] = 'ebayDealsChecker@localhost.com'
-        msg['To'] = emailAddress
-        s = smtplib.SMTP('localhost')
-        s.sendmail('ebayDealsCHecker@localhost.com',[emailAddress], msg.as_string())
-        s.quit
+        s = smtplib.SMTP('smtp.gmail.com',587)
+        s.starttls()
+        s.login(emailAddress,emailPass)
+        s.sendmail(emailAddress, emailAddress, msg.as_string())
+        s.quit()
 
