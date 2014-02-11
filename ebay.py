@@ -15,7 +15,7 @@ def dealsChecker(searchTerm, emailAddress, emailPass):
     itemData = itemData.replace(')', '')
     itemData = itemData.replace(';', '')
     itemData = json.loads(itemData)
-
+    itemHtml = """"""
     for i in itemData['ebaydailydeals']['items']:
         if searchTerm.lower() in i['title'].lower():
             if str(i['itemid']) in itemIds:
@@ -24,10 +24,25 @@ def dealsChecker(searchTerm, emailAddress, emailPass):
                 itemIds.append(str(i['itemid']))
                 itemInfo = i['title'], i['convertedcurrentprice'], i['dealurl']
                 msg =  msg + i['title'] + ' ' + i['convertedcurrentprice'] + ' ' + i['dealurl'] + "\n"
+                itemHtml = itemHtml + '<tr><td>' + i['title'] + '</td><td>' + i['dealurl'] + '</td></tr>'
     pickle.dump(itemIds, open('itemIds.pkl', 'wb'))
 
     if msg:
-        msg = MIMEText(msg)
+        count = 0
+        html = """"""
+        email = open('email.html','r')
+        test = open('test.html','w')
+        for i in email:
+            if count == 187:
+                html = html + itemHtml
+                count += 1
+            else:
+                count += 1
+                html = html + i
+        test.write(html)
+        test.close()
+        email.close()
+        msg = MIMEText(html)
         msg['Subject'] = 'Ebay daily deals for %s' % searchTerm
         s = smtplib.SMTP('smtp.gmail.com',587)
         s.starttls()
