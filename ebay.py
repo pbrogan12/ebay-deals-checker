@@ -31,7 +31,6 @@ def dealsChecker(searchTerm, emailAddress, emailPass):
         count = 0
         html = """"""
         email = open('email.html','r')
-        test = open('test.html','w')
         for i in email:
             if count == 187:
                 html = html + itemHtml
@@ -39,10 +38,9 @@ def dealsChecker(searchTerm, emailAddress, emailPass):
             else:
                 count += 1
                 html = html + i
-        test.write(html)
-        test.close()
         email.close()
-        msg = MIMEText(html)
+        part2 = MIMEText(html, 'html')
+        msg.attatch(part2)
         msg['Subject'] = 'Ebay daily deals for %s' % searchTerm
         s = smtplib.SMTP('smtp.gmail.com',587)
         s.starttls()
