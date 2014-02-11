@@ -1,6 +1,8 @@
 import urllib, json, smtplib
 import cPickle as pickle
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 def dealsChecker(searchTerm, emailAddress, emailPass):
 
     try:
@@ -39,6 +41,7 @@ def dealsChecker(searchTerm, emailAddress, emailPass):
                 count += 1
                 html = html + i
         email.close()
+        msg = MIMEMultipart('alternative')
         part2 = MIMEText(html, 'html')
         msg.attach(part2)
         msg['Subject'] = 'Ebay daily deals for %s' % searchTerm
