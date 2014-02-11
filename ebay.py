@@ -40,7 +40,7 @@ def dealsChecker(searchTerm, emailAddress, emailPass):
                 html = html + i
         email.close()
         part2 = MIMEText(html, 'html')
-        msg.attatch(part2)
+        msg.attach(part2)
         msg['Subject'] = 'Ebay daily deals for %s' % searchTerm
         s = smtplib.SMTP('smtp.gmail.com',587)
         s.starttls()
